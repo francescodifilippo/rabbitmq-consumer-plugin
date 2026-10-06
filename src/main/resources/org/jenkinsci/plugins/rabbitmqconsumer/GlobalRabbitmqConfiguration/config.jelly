@@ -16,7 +16,7 @@
     <j:if test="${descriptor != null}">
       <st:bind var="rabbitmqConsumerCspDescriptor" value="${descriptor}" />
     </j:if>
-    <st:adjunct includes="org.jenkinsci.plugins.rabbitmqconsumer.GlobalRabbitmqConfiguration.config" />
+    <st:adjunct includes="org.jenkinsci.plugins.rabbitmqconsumer.GlobalRabbitmqConfiguration.connection-status" />
     <f:entry title="${%Enable consumer}" field="enableConsumer">
       <f:checkbox />
     </f:entry>

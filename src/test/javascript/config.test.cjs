@@ -1,9 +1,17 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { readFileSync } = require('node:fs');
+const { readFileSync, existsSync } = require('node:fs');
 const { join } = require('node:path');
 const vm = require('node:vm');
-const source = readFileSync(join(__dirname, '../../main/resources/org/jenkinsci/plugins/rabbitmqconsumer/GlobalRabbitmqConfiguration/config.js'), 'utf8');
+const source = readFileSync(join(__dirname, '../../main/resources/org/jenkinsci/plugins/rabbitmqconsumer/GlobalRabbitmqConfiguration/connection-status.js'), 'utf8');
+
+test('status adjunct does not resolve the global configuration Jelly as an inclusion fragment', () => {
+  const resources = join(__dirname, '../../main/resources');
+  const jelly = readFileSync(join(resources, 'org/jenkinsci/plugins/rabbitmqconsumer/GlobalRabbitmqConfiguration/config.jelly'), 'utf8');
+  const adjunct = jelly.match(/<st:adjunct includes="([^"]+)"/)[1].replace(/\./g, '/');
+  assert.equal(existsSync(join(resources, adjunct + '.js')), true);
+  assert.equal(existsSync(join(resources, adjunct + '.jelly')), false);
+});
 
 function page({ behaviour = true, loading = false, present = true, proxy = true } = {}) {
   const status = { dataset: {
